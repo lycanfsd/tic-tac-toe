@@ -1,0 +1,47 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: medium;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  background-color: aliceblue;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.title {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: bolder;
+}
+
+.main {
+  background-color: antiquewhite;
+  display: grid;
+  min-height: 400px;
+  min-width: 400px;
+  grid-template: repeat(3, minmax(50px, 1fr)) / repeat(3, minmax(50px, 1fr));
+  place-items: center;
+}
+
+.cellGrid {
+  background-color: palevioletred;
+  border: solid black 2px;
+  width: 100%;
+  height: 100%;
+}
