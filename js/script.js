@@ -2,11 +2,10 @@ const main = document.querySelector(".main");
 
 //Gameboard
 const Gameboard = (() => {
-  const board = new Array(9);
+  let board = new Array(9);
   for (let i = 0; i < board.length; i++) {
     board[i] = 0;
   }
-  const getBoard = () => board;
   // Adds player mark to the board array. Position is from 0-8.
   const addMark = (position, player) => {
     if (board[position] === 0 && player.getMark() === "X") {
@@ -15,7 +14,15 @@ const Gameboard = (() => {
       board[position] = 2;
     }
   };
-  return { getBoard, addMark };
+  function resetBoard() {
+    board.length = 0;
+    board = new Array(9);
+    for (let i = 0; i < board.length; i++) {
+      board[i] = 0;
+    }
+  }
+  const getBoard = () => board;
+  return { getBoard, addMark, resetBoard };
 })();
 
 //Create Players
@@ -33,8 +40,24 @@ const GameController = (() => {
   const switchTurns = () => {
     activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
   };
+
+  //Function to play a round
+  const playRound = () => {
+    Gameboard.resetBoard();
+    switch (activePlayer) {
+      case playerOne:
+        registerClickEvent();
+        break;
+      case playerTwo:
+        registerClickEvent();
+        break;
+    }
+  };
+
+  //Function to determine winner
+
   const getActivePlayer = () => activePlayer;
-  return { getActivePlayer };
+  return { getActivePlayer, playRound, switchTurns };
 })();
 
 //Display
@@ -67,6 +90,10 @@ const DisplayController = (() => {
       }
     }
   }
+  return { updateDisplay };
+})();
+
+function registerClickEvent() {
   // Needs to take user click and see who clicked then add mark at specific clicked position
   const divGrid = document.querySelectorAll(".cellGrid");
   divGrid.forEach((div) => {
@@ -76,10 +103,14 @@ const DisplayController = (() => {
         arr.indexOf(e.target),
         GameController.getActivePlayer()
       );
-      updateDisplay();
+      DisplayController.updateDisplay();
+      GameController.switchTurns();
     });
   });
-})();
+}
 
 //Delete After
 console.log(Gameboard.getBoard());
+
+// Start round after Play button is pressed
+GameController.playRound();
